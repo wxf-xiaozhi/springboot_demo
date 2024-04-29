@@ -2,11 +2,14 @@ package com.example.demo.service.easyexcel;
 
 import cn.hutool.json.JSONUtil;
 import com.alibaba.excel.context.AnalysisContext;
+import com.alibaba.excel.metadata.data.ReadCellData;
 import com.alibaba.excel.read.listener.ReadListener;
+import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName: DemoDataListener
@@ -81,4 +84,12 @@ public class DemoDataListener  implements ReadListener<DemoData> {
 //        demoDAO.save(cachedDataList);
         log.info("存储数据库成功！");
     }
+
+    @Override
+    public void invokeHead(Map<Integer, ReadCellData<?>> headMap, AnalysisContext context) {
+        log.info("解析到一条头数据:{}", JSON.toJSONString(headMap));
+    }
+
+
+
 }
