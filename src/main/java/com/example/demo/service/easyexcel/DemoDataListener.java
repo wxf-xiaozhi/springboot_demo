@@ -1,5 +1,7 @@
 package com.example.demo.service.easyexcel;
 
+import cn.hutool.core.date.DatePattern;
+import cn.hutool.json.JSONConfig;
 import cn.hutool.json.JSONUtil;
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.metadata.data.ReadCellData;
@@ -54,7 +56,10 @@ public class DemoDataListener  implements ReadListener<DemoData> {
      */
     @Override
     public void invoke(DemoData data, AnalysisContext context) {
-        log.info("解析到一条数据:{}", JSONUtil.toJsonStr(data));
+        // JSONConfig指定日期类的转换格式
+        JSONConfig jsonConfig = new JSONConfig();
+        jsonConfig.setDateFormat(DatePattern.NORM_DATETIME_PATTERN);
+        log.info("解析到一条数据:{}", JSONUtil.toJsonStr(data,jsonConfig));
         cachedDataList.add(data);
         // 达到BATCH_COUNT了，需要去存储一次数据库，防止数据几万条数据在内存，容易OOM
         if (cachedDataList.size() >= BATCH_COUNT) {
