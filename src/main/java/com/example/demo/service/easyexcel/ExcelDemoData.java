@@ -1,11 +1,11 @@
 package com.example.demo.service.easyexcel;
 
 import com.alibaba.excel.annotation.ExcelProperty;
-import com.alibaba.excel.annotation.format.DateTimeFormat;
-import com.alibaba.fastjson.annotation.JSONField;
+import com.example.demo.domain.CasUser;
 import com.example.demo.service.easyexcel.convert.CommonBooleanConverter;
+import com.example.demo.service.easyexcel.convert.CommonConverter;
 import com.example.demo.service.easyexcel.convert.CommonDateConverter;
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.example.demo.service.easyexcel.customconvert.CasUserConverter;
 import lombok.Data;
 import com.example.demo.service.easyexcel.convert.CommonIntegerConverter;
 
@@ -18,7 +18,7 @@ import java.util.Date;
  * @create: 2024-04-28 15:45
  */
 @Data
-public class DemoData {
+public class ExcelDemoData {
 
         @ExcelProperty(index = 0)
         private String string;
@@ -42,6 +42,10 @@ public class DemoData {
 //        @JSONField(format =   "yyyy-MM-dd HH:mm:ss")
 //        @DateTimeFormat( value= "yyyy-MM-dd HH:mm:ss")
         private Date dateData;
+
+
+        @ExcelProperty(index = 6,converter = CommonConverter.class)
+        private CasUser user;
 
 }
 

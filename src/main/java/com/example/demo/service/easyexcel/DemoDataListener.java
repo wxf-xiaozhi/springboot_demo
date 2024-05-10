@@ -20,7 +20,7 @@ import java.util.Map;
  * @create: 2024-04-28 15:47
  */
 @Slf4j
-public class DemoDataListener  implements ReadListener<DemoData> {
+public class DemoDataListener  implements ReadListener<ExcelDemoData> {
     /**
      * 每隔5条存储数据库，实际使用中可以100条，然后清理list ，方便内存回收
      */
@@ -28,7 +28,7 @@ public class DemoDataListener  implements ReadListener<DemoData> {
     /**
      * 缓存的数据
      */
-    private List<DemoData> cachedDataList = new ArrayList<>(BATCH_COUNT);
+    private List<ExcelDemoData> cachedDataList = new ArrayList<>(BATCH_COUNT);
     /**
      * 假设这个是一个DAO，当然有业务逻辑这个也可以是一个service。当然如果不用存储这个对象没用。
      */
@@ -55,7 +55,7 @@ public class DemoDataListener  implements ReadListener<DemoData> {
      * @param context
      */
     @Override
-    public void invoke(DemoData data, AnalysisContext context) {
+    public void invoke(ExcelDemoData data, AnalysisContext context) {
         // JSONConfig指定日期类的转换格式
         JSONConfig jsonConfig = new JSONConfig();
         jsonConfig.setDateFormat(DatePattern.NORM_DATETIME_PATTERN);
