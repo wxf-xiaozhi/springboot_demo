@@ -1,15 +1,24 @@
 package com.example.demo.service.easyexcel;
 
 import cn.hutool.core.date.DatePattern;
+import cn.hutool.core.util.ReferenceUtil;
+import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.json.JSONConfig;
 import cn.hutool.json.JSONUtil;
+import cn.hutool.poi.excel.ExcelUtil;
+import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.metadata.data.ReadCellData;
 import com.alibaba.excel.read.listener.ReadListener;
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 
+import java.lang.annotation.Annotation;
+import java.lang.ref.Reference;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -60,6 +69,13 @@ public class DemoDataListener  implements ReadListener<ExcelDemoData> {
         JSONConfig jsonConfig = new JSONConfig();
         jsonConfig.setDateFormat(DatePattern.NORM_DATETIME_PATTERN);
         log.info("解析到一条数据:{}", JSONUtil.toJsonStr(data,jsonConfig));
+//        获取列上的注解
+//        Date dateData = data.getDateData();
+//        Field field = ReflectUtil.getField(ExcelDemoData.class, "dateData");
+//        ExcelProperty annotation = field.getAnnotation(ExcelProperty.class);
+//        int index = annotation.index();
+//        String s = ExcelUtil.indexToColName(index);
+//        log.info("解析到一条数据:{}", s);
         cachedDataList.add(data);
         // 达到BATCH_COUNT了，需要去存储一次数据库，防止数据几万条数据在内存，容易OOM
         if (cachedDataList.size() >= BATCH_COUNT) {

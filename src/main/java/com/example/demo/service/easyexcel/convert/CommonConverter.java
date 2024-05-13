@@ -1,6 +1,7 @@
 package com.example.demo.service.easyexcel.convert;
 
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.poi.excel.ExcelUtil;
 import com.alibaba.excel.converters.Converter;
 import com.alibaba.excel.enums.CellDataTypeEnum;
 import com.alibaba.excel.metadata.GlobalConfiguration;
@@ -31,6 +32,7 @@ public  class CommonConverter implements Converter<CasUser> {
     public CasUser convertToJavaData(ReadCellData<?> cellData, ExcelContentProperty contentProperty, GlobalConfiguration globalConfiguration) throws Exception {
         String value = StringUtils.trim(cellData.getStringValue());
         Integer rowIndex = cellData.getRowIndex()+1;
+        String s = ExcelUtil.indexToColName(cellData.getColumnIndex());
         Integer columnIndex = cellData.getColumnIndex()+1;
         Class<?> type = contentProperty.getField().getType();
         Object data = cellData.getData();
@@ -42,7 +44,7 @@ public  class CommonConverter implements Converter<CasUser> {
             CasUser casUser = casUserMap.get(value);
             if(ObjectUtil.isNull(casUser)){
                 String message = "第%s行第%s列的值:[%s]是无效值";
-                String format = String.format(message, rowIndex, columnIndex, value);
+                String format = String.format(message, rowIndex, s, value);
                 throw new IllegalArgumentException(format);
             }
             return casUser;
