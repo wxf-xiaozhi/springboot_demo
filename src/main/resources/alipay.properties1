@@ -1,0 +1,9 @@
+alipay.appId=
+alipay.serverUrl=https://openapi.alipay.com/gateway.do
+alipay.privateKey=
+alipay.format=json
+alipay.charset=UTF-8
+alipay.signType=RSA2
+alipay.appCertPath=/cert/appCertPublicKey_2016022601166344.crt
+alipay.alipayCertPath=/cert/alipayCertPublicKey_RSA2.crt
+alipay.alipayRootCertPath=/cert/alipayRootCert.crt
