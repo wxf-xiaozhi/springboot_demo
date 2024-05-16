@@ -27,3 +27,8 @@ src/main/java/com/example/demo/AliPayBean.java
 com/example/demo/StopWatchTest.java
 ```
 
+#### 基于角色的数据级别的控制（列级别控制）
+```agsl
+com.example.demo.aspect.DataFilterAspect.dataFilter
+```
+
