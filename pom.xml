@@ -15,6 +15,10 @@
     <description>demo1</description>
     <properties>
         <java.version>8</java.version>
+        <mybatis.plus>3.5.5</mybatis.plus>
+        <mysql.connect.java>8.0.27</mysql.connect.java>
+        <mysql-connector-j>8.0.33</mysql-connector-j>
+        <shiro.version>1.12.0</shiro.version>
     </properties>
     <dependencies>
         <dependency>
@@ -70,6 +74,31 @@
             <version>2.0.0</version>
         </dependency>
 
+        <!--mybatis-plus-->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <version>${mybatis.plus}</version>
+        </dependency>
+
+        <!--mysql-->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql.connect.java}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+        </dependency>
 
     </dependencies>
 

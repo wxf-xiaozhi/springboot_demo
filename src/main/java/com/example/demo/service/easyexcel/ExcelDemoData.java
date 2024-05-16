@@ -37,6 +37,8 @@ public class ExcelDemoData {
         private Boolean active;
 
         @ExcelProperty(index = 5,converter = CommonDateConverter.class)
+//        目标
+//        @ExcelProperty(index = 5,converter = CommonDateConverter<com.example.demo.service.CasUserService.getUserList>.class)
 //        @DateTimeFormat
 //        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
 //        @JSONField(format =   "yyyy-MM-dd HH:mm:ss")
