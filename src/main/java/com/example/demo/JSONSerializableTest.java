@@ -7,7 +7,6 @@ import com.example.demo.vo.UserVO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
 
 /**
  * @ClassName: JSONSerializable
@@ -18,8 +17,9 @@ import org.junit.Test;
 @Slf4j
 public class JSONSerializableTest {
 
-    @Test
-    public void testJSON(){
+    public static void main(String[] args) {
+
+
         UserVO userVo = new UserVO();
         userVo.setActivityPattern(ActivityPatternEnum.UNION_PRODUCT_BANK_COUPON);
         userVo.setName("myname");
