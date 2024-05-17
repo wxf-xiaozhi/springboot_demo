@@ -1,24 +1,16 @@
-package com.example.demo.service.easyexcel;
+package com.example.demo.service.easyexcel.read;
 
 import cn.hutool.core.date.DatePattern;
-import cn.hutool.core.util.ReferenceUtil;
-import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.json.JSONConfig;
 import cn.hutool.json.JSONUtil;
-import cn.hutool.poi.excel.ExcelUtil;
-import com.alibaba.excel.EasyExcel;
-import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.metadata.data.ReadCellData;
 import com.alibaba.excel.read.listener.ReadListener;
 import com.alibaba.fastjson.JSON;
+import com.example.demo.service.easyexcel.ExcelReadDemoData;
 import lombok.extern.slf4j.Slf4j;
 
-import java.lang.annotation.Annotation;
-import java.lang.ref.Reference;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -29,7 +21,7 @@ import java.util.Map;
  * @create: 2024-04-28 15:47
  */
 @Slf4j
-public class DemoDataListener  implements ReadListener<ExcelDemoData> {
+public class DemoDataListener  implements ReadListener<ExcelReadDemoData> {
     /**
      * 每隔5条存储数据库，实际使用中可以100条，然后清理list ，方便内存回收
      */
@@ -37,7 +29,7 @@ public class DemoDataListener  implements ReadListener<ExcelDemoData> {
     /**
      * 缓存的数据
      */
-    private List<ExcelDemoData> cachedDataList = new ArrayList<>(BATCH_COUNT);
+    private List<ExcelReadDemoData> cachedDataList = new ArrayList<>(BATCH_COUNT);
     /**
      * 假设这个是一个DAO，当然有业务逻辑这个也可以是一个service。当然如果不用存储这个对象没用。
      */
@@ -64,7 +56,7 @@ public class DemoDataListener  implements ReadListener<ExcelDemoData> {
      * @param context
      */
     @Override
-    public void invoke(ExcelDemoData data, AnalysisContext context) {
+    public void invoke(ExcelReadDemoData data, AnalysisContext context) {
         // JSONConfig指定日期类的转换格式
         JSONConfig jsonConfig = new JSONConfig();
         jsonConfig.setDateFormat(DatePattern.NORM_DATETIME_PATTERN);

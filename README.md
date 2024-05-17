@@ -2,32 +2,37 @@
 
 ### 当前继承三方框架有
 
-#### easyExcel，主要测试自定义convert,编写各个接口导出的字段的通用convert
+## easyExcel
+##### 主要测试自定义convert,编写各个接口导入的字段的通用convert
 ```agsl
 com.example.demo.EasyExcelTest
 ```
+##### 测试easyExcel的限制某些字段导出
+```agsl
+com.example.demo.EasyExcelTest.indexWrite
+```
 
-#### liteflow，主要测试自定义业务引擎写法
+## liteflow，主要测试自定义业务引擎写法
 ```agsl
 com.example.demo.controller.TestController.testConfig
 ```
 
-#### guava-retrying 主要测试重试框架中根据每次重试结果的自定义逻辑添加
+## guava-retrying 主要测试重试框架中根据每次重试结果的自定义逻辑添加
 ```agsl
 com.example.demo.RetryTest.main
 ```
 
-#### 测试容器启动时找不到properties文件时，是否会报错，报的什么错
+## 测试容器启动时找不到properties文件时，是否会报错，报的什么错
 ```agsl
 src/main/java/com/example/demo/AliPayBean.java
 ```
 
-#### 测试stopwatch用发
+## 测试stopwatch用发
 ```agsl
 com/example/demo/StopWatchTest.java
 ```
 
-#### 基于角色的数据级别的控制（列级别控制）
+## 基于角色的数据列级别的控制（列级别控制）
 ```agsl
 com.example.demo.aspect.DataFilterAspect.dataFilter
 ```

@@ -1,4 +1,4 @@
-package com.example.demo.service.easyexcel;
+package com.example.demo.service.easyexcel.read;
 
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.context.AnalysisContext;

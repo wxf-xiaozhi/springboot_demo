@@ -2,12 +2,11 @@ package com.example.demo.service.easyexcel;
 
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.example.demo.domain.CasUser;
-import com.example.demo.service.easyexcel.convert.CommonBooleanConverter;
-import com.example.demo.service.easyexcel.convert.CommonConverter;
-import com.example.demo.service.easyexcel.convert.CommonDateConverter;
-import com.example.demo.service.easyexcel.customconvert.CasUserConverter;
+import com.example.demo.service.easyexcel.read.convert.CommonBooleanConverter;
+import com.example.demo.service.easyexcel.read.convert.CommonConverter;
+import com.example.demo.service.easyexcel.read.convert.CommonDateConverter;
 import lombok.Data;
-import com.example.demo.service.easyexcel.convert.CommonIntegerConverter;
+import com.example.demo.service.easyexcel.read.convert.CommonIntegerConverter;
 
 import java.util.Date;
 
@@ -18,7 +17,7 @@ import java.util.Date;
  * @create: 2024-04-28 15:45
  */
 @Data
-public class ExcelDemoData {
+public class ExcelReadDemoData {
 
         @ExcelProperty(index = 0)
         private String string;

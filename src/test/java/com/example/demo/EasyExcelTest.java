@@ -8,9 +8,10 @@ import com.alibaba.excel.read.listener.PageReadListener;
 import com.alibaba.excel.read.listener.ReadListener;
 import com.alibaba.excel.read.metadata.ReadSheet;
 import com.alibaba.fastjson.JSONObject;
-import com.example.demo.service.easyexcel.ExcelDemoData;
-import com.example.demo.service.easyexcel.DemoDataListener;
-import com.example.demo.service.easyexcel.IgnoreBlankListener;
+import com.example.demo.service.easyexcel.ExcelReadDemoData;
+import com.example.demo.service.easyexcel.ExcelWriteDemoData;
+import com.example.demo.service.easyexcel.read.DemoDataListener;
+import com.example.demo.service.easyexcel.read.IgnoreBlankListener;
 import com.example.demo.utils.TestFileUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.formula.functions.T;
@@ -18,9 +19,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @ClassName: EasyExcelTest
@@ -41,9 +44,9 @@ public class EasyExcelTest {
         String fileName ="D:\\study_code\\demo1\\src\\main\\resources\\testfile\\demo\\demo.xlsx";
         // 这里默认每次会读取100条数据 然后返回过来 直接调用使用数据就行
         // 具体需要返回多少行可以在`PageReadListener`的构造函数设置
-        EasyExcel.read(fileName, ExcelDemoData.class, new PageReadListener<ExcelDemoData>(dataList -> {
-            for (ExcelDemoData excelDemoData : dataList) {
-                log.info("读取到一条数据{}", JSONObject.toJSONString(excelDemoData));
+        EasyExcel.read(fileName, ExcelReadDemoData.class, new PageReadListener<ExcelReadDemoData>(dataList -> {
+            for (ExcelReadDemoData excelReadDemoData : dataList) {
+                log.info("读取到一条数据{}", JSONObject.toJSONString(excelReadDemoData));
             }
         })).sheet().doRead();
 
@@ -59,7 +62,7 @@ public class EasyExcelTest {
         // 匿名内部类 不用额外写一个DemoDataListener
         String fileName = TestFileUtil.getPath() + "demo" + File.separator + "demo.xlsx";
         // 这里 需要指定读用哪个class去读，然后读取第一个sheet 文件流会自动关闭
-        EasyExcel.read(fileName, ExcelDemoData.class, new ReadListener<ExcelDemoData>() {
+        EasyExcel.read(fileName, ExcelReadDemoData.class, new ReadListener<ExcelReadDemoData>() {
             /**
              * 单次缓存的数据量
              */
@@ -67,10 +70,10 @@ public class EasyExcelTest {
             /**
              *临时存储
              */
-            private List<ExcelDemoData> cachedDataList = new ArrayList<>(BATCH_COUNT);
+            private List<ExcelReadDemoData> cachedDataList = new ArrayList<>(BATCH_COUNT);
 
             @Override
-            public void invoke(ExcelDemoData data, AnalysisContext context) {
+            public void invoke(ExcelReadDemoData data, AnalysisContext context) {
                 cachedDataList.add(data);
                 if (cachedDataList.size() >= BATCH_COUNT) {
                     saveData();
@@ -100,7 +103,7 @@ public class EasyExcelTest {
         // 写法3：
         String fileName ="D:\\study_code\\springboot_demo\\src\\main\\resources\\testfile\\demo\\demo.xlsx";
         // 这里 需要指定读用哪个class去读，然后读取第一个sheet 文件流会自动关闭
-        EasyExcel.read(fileName, ExcelDemoData.class, new DemoDataListener()).sheet().headRowNumber(3).doRead();
+        EasyExcel.read(fileName, ExcelReadDemoData.class, new DemoDataListener()).sheet().headRowNumber(3).doRead();
     }
     @Test
     public void getEasyExcel5() {
@@ -130,11 +133,31 @@ public class EasyExcelTest {
          */
         String fileName = TestFileUtil.getPath() + "demo" + File.separator + "demo.xlsx";
         // 一个文件一个reader
-        try (ExcelReader excelReader = EasyExcel.read(fileName, ExcelDemoData.class, new DemoDataListener()).build()) {
+        try (ExcelReader excelReader = EasyExcel.read(fileName, ExcelReadDemoData.class, new DemoDataListener()).build()) {
             // 构建一个sheet 这里可以指定名字或者no
             ReadSheet readSheet = EasyExcel.readSheet(0).build();
             // 读取一个sheet
             excelReader.read(readSheet);
         }
+    }
+
+    @Test
+    public void indexWrite() {
+        String fileName = TestFileUtil.getPath() + "indexWrite" + System.currentTimeMillis() + ".xlsx";
+
+        // 这里 需要指定写用哪个class去写，然后写到第一个sheet，名字为模板 然后文件流会自动关闭
+        int[] a = {1,2};
+        List<Integer> array = Arrays.stream(a).boxed().collect(Collectors.toList());
+        EasyExcel.write(fileName, ExcelWriteDemoData.class).includeColumnIndexes(array).sheet("模板").doWrite(data());
+        log.info(fileName);
+    }
+
+    private List<ExcelWriteDemoData> data(){
+        List<ExcelWriteDemoData> data = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            ExcelWriteDemoData build = ExcelWriteDemoData.builder().doubleData(23d).mydouble(24d).date(new Date()).string("测试" + i).integer(i).build();
+            data.add(build);
+        }
+        return data;
     }
 }
