@@ -2,4 +2,11 @@
     <chain name="chain1">
         THEN(a, b, c);
     </chain>
+    <chain name="chain2">
+        THEN(a,SWITCH(d).to(b,c));
+    </chain>
+
+    <chain name="chain3">
+        IF(e,b,c);
+    </chain>
 </flow>

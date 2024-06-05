@@ -22,8 +22,19 @@ public class LiteFlowTest {
     private FlowExecutor flowExecutor;
 
     @Test
-    public void getEasyExcel1() {
+    public void getChain1() {
         LiteflowResponse response = flowExecutor.execute2Resp("chain1", "arg");
+        log.info(response.getExecuteStepStrWithTime());
+    }
+
+    @Test
+    public void getChain2() {
+        LiteflowResponse response = flowExecutor.execute2Resp("chain2", "chain2");
+        log.info(response.getExecuteStepStrWithTime());
+    }
+    @Test
+    public void getChain3() {
+        LiteflowResponse response = flowExecutor.execute2Resp("chain3", "chain3");
         log.info(response.getExecuteStepStrWithTime());
     }
 
