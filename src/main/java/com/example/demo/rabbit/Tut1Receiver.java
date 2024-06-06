@@ -31,7 +31,7 @@ import org.springframework.util.StopWatch;
 //@Order
 //@Priority()
 //@RabbitListener(queues = "tut.hello",priority = "10")
-@RabbitListener(queues = "tut.hello" )
+@RabbitListener(queues = "tut.hello",priority = "${server.port}" )
 //@DependsOn("tut2Receiver")
 public class Tut1Receiver {
 

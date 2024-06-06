@@ -28,7 +28,8 @@ import org.springframework.util.StopWatch;
 //@Order(2)
 @Component
 @Slf4j
-@RabbitListener(queues = "tut.hello",exclusive = true)
+//@RabbitListener(queues = "tut.hello",exclusive = true)
+@RabbitListener(queues = "tut.hello")
 public class Tut2Receiver {
 
 	private  int instance=2;
