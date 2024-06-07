@@ -9,4 +9,8 @@
     <chain name="chain3">
         IF(e,b,c);
     </chain>
+
+    <chain name="chain4">
+        WHEN(f,g);
+    </chain>
 </flow>
