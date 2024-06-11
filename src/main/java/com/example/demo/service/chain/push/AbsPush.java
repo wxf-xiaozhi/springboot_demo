@@ -1,4 +1,4 @@
-package com.example.demo.service.chain;
+package com.example.demo.service.chain.push;
 
 import com.example.demo.domain.ProductReport;
 import com.example.demo.service.chain.callback.IPushCallBack;

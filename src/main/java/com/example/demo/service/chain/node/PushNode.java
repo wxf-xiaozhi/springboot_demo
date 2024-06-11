@@ -1,6 +1,6 @@
 package com.example.demo.service.chain.node;
 
-import com.example.demo.service.chain.AbsPush;
+import com.example.demo.service.chain.push.AbsPush;
 import lombok.Data;
 
 /**

@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
  */
 @Data
 @Slf4j
-public class PushZLChainExecute {
+public class PushChain {
     /**
      * 执行链名称
      */
@@ -45,7 +45,7 @@ public class PushZLChainExecute {
 
     ProductReportPushHistoryCrudService historyCrudService;
 
-    public PushZLChainExecute(Integer id, ProductReportPushHistoryCrudService historyCrudService) {
+    public PushChain(Integer id, ProductReportPushHistoryCrudService historyCrudService) {
         this.id = id;
         this.historyCrudService = historyCrudService;
     }

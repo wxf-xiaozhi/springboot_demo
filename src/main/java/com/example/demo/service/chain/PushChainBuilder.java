@@ -23,7 +23,7 @@ import java.util.Map;
  */
 @Component
 @Slf4j
-public class ChainBuild {
+public class PushChainBuilder {
 
     @Autowired
     APush zlQjsPushNode;
@@ -44,12 +44,12 @@ public class ChainBuild {
 
 
     @Getter
-    Map<Integer, PushZLChainExecute> pushZLChainMap = new HashMap<>() ;
+    Map<Integer, PushChain> pushZLChainMap = new HashMap<>() ;
 
 
 
-    PushZLChainExecute buildPushChain9() {
-        PushZLChainExecute pushChain = new PushZLChainExecute(9, this.historyCrudService);
+    PushChain buildPushChain9() {
+        PushChain pushChain = new PushChain(9, this.historyCrudService);
         pushChain.addLast(new PushNode(this.dnfActivityPushNode));
         pushChain.addLast(new PushNode(this.yhCashBackRulePushNode));
         pushChain.addLast(new PushNode(this.yhUnionProductPushNode));
@@ -66,16 +66,12 @@ public class ChainBuild {
      * @return
      */
     public List<Integer> getPushBizTypeList(Integer reportType){
-        PushZLChainExecute pushZLChainExecute = this.getPushChainByReportType(reportType);
-        return pushZLChainExecute.getBizTypeList();
+        PushChain pushChain = this.getPushChainByReportType(reportType);
+        return pushChain.getBizTypeList();
     }
 
-    public PushZLChainExecute getPushChainByReportType(Integer reportType){
+    public PushChain getPushChainByReportType(Integer reportType){
         return this.pushZLChainMap.get(reportType);
-    }
-
-    public Map<Integer, PushZLChainExecute> allPushChain(){
-        return this.pushZLChainMap;
     }
 
 

@@ -26,7 +26,7 @@ public class ZlPushService {
 
 
     @Autowired
-    ChainBuild chainBuild;
+    PushChainBuilder pushChainBuilder;
 
 
 
@@ -35,7 +35,7 @@ public class ZlPushService {
     /**
      * 活动模式和推送链的关系
      */
-    Map<Integer, PushZLChainExecute> activityPattenPushChainRule;
+    Map<Integer, PushChain> activityPattenPushChainRule;
 
     @PostConstruct
     public void init(){
@@ -48,18 +48,19 @@ public class ZlPushService {
     public void buildActivityPattenPushChainRuleRelation(){
 
         this.activityPattenPushChainRule = new HashMap<>();
-        PushZLChainExecute pushZLChainExecute9 = this.chainBuild.buildPushChain9();
+        PushChain pushChain9 = this.pushChainBuilder.buildPushChain9();
 
         // 权益券-数币红包活动
-        this.activityPattenPushChainRule.put(ActivityPatternEnum.UNION_PRODUCT_DCEP_RED_PACKAGE.getCode(), pushZLChainExecute9);
+        this.activityPattenPushChainRule.put(ActivityPatternEnum.UNION_PRODUCT_DCEP_RED_PACKAGE.getCode(), pushChain9);
 
     }
 
 
 
-    public Map<Integer, PushZLChainExecute> activityPattenPushRuleRelation(){
+    public Map<Integer, PushChain> activityPattenPushRuleRelation(){
         return this.activityPattenPushChainRule;
     }
+
 
 
     /**
@@ -68,9 +69,9 @@ public class ZlPushService {
      */
     public Boolean startPush(ProductReport report) {
         Integer reportType = report.getReportType();
-        PushZLChainExecute pushZLChainExecute = this.chainBuild.getPushZLChainMap().get(reportType);
-        log.info("============开始向众联推送业务信息,chainId:{},reportId:{}=========================", pushZLChainExecute.show(), JSONUtil.toJsonStr(report));
-        return pushZLChainExecute.start(report);
+        PushChain pushChain = this.pushChainBuilder.getPushZLChainMap().get(reportType);
+        log.info("============开始向众联推送业务信息,chainId:{},reportId:{}=========================", pushChain.show(), JSONUtil.toJsonStr(report));
+        return pushChain.start(report);
     }
 
     /**
@@ -78,18 +79,18 @@ public class ZlPushService {
      */
     public Boolean startPushFromZlBizType(ProductReport report, Integer zlBizType){
         Integer reportType = report.getReportType();
-        PushZLChainExecute pushZLChainExecute = this.chainBuild.getPushZLChainMap().get(reportType);
-        log.info("============开始从【{}】向众联推送业务信息，chainId:{},reportId:{}=========================", ZLSystemBizTypeEnum.getByCode(zlBizType).getDesc(), pushZLChainExecute.show(),report);
-        return pushZLChainExecute.startByBizType(report,zlBizType);
+        PushChain pushChain = this.pushChainBuilder.getPushZLChainMap().get(reportType);
+        log.info("============开始从【{}】向众联推送业务信息，chainId:{},reportId:{}=========================", ZLSystemBizTypeEnum.getByCode(zlBizType).getDesc(), pushChain.show(),report);
+        return pushChain.startByBizType(report,zlBizType);
     }
 
     /**
      * 单个推送某个业务类型
      */
     public Boolean singleBizPush(ProductReport report,Integer zlBizType){
-        PushZLChainExecute pushZLChainExecute = this.chainBuild.getPushZLChainMap().get(9);
+        PushChain pushChain = this.pushChainBuilder.getPushZLChainMap().get(9);
         log.info("============开始向众联推送单个业务信息，zlBizType:{},reportId:{}=========================", ZLSystemBizTypeEnum.getByCode(zlBizType).getDesc(),report);
-        return pushZLChainExecute.singleBizPush(report,zlBizType);
+        return pushChain.singleBizPush(report,zlBizType);
     }
     /**
      *
@@ -98,11 +99,16 @@ public class ZlPushService {
      * @return
      */
     public Integer getReportTypeByPatternPackage(Integer activityPattern) {
-        PushZLChainExecute pushZLChainExecute = this.activityPattenPushChainRule.get(activityPattern);
-        if(pushZLChainExecute!= null){
-            return pushZLChainExecute.getId();
+        PushChain pushChain = this.activityPattenPushChainRule.get(activityPattern);
+        if(pushChain != null){
+            return pushChain.getId();
         }
         return null;
+    }
+
+    public PushChain getChainByPatternPackage(Integer activityPattern) {
+        PushChain pushChain = this.activityPattenPushChainRule.get(activityPattern);
+        return pushChain;
     }
 
 

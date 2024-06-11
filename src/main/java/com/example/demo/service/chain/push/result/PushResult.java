@@ -1,4 +1,4 @@
-package com.example.demo.service.chain;
+package com.example.demo.service.chain.push.result;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
@@ -10,7 +10,7 @@ import lombok.Data;
  * @Version 1.0
  */
 @Data
-public class ThirdResult  {
+public class PushResult {
 
     /**
      * 响应码 00：成功，其他：错误
@@ -40,8 +40,8 @@ public class ThirdResult  {
     /**
      * 构建失败的返回信息
      */
-    public static ThirdResult fail() {
-        ThirdResult result = new ThirdResult();
+    public static PushResult fail() {
+        PushResult result = new PushResult();
         result.setReturnCode("999");
         result.setReturnMsg("系统出现未知错误");
         return result;

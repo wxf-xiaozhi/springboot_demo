@@ -3,8 +3,7 @@ package com.example.demo.service.chain.push;
 import cn.hutool.json.JSONUtil;
 import com.example.demo.domain.ProductReport;
 import com.example.demo.enums.ZLSystemBizTypeEnum;
-import com.example.demo.service.chain.AbsPush;
-import com.example.demo.service.chain.ThirdResult;
+import com.example.demo.service.chain.push.result.PushResult;
 import com.example.demo.service.chain.commonresult.ZlPushCommResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -37,17 +36,17 @@ public class BPush extends AbsPush {
     }
 
     @Override
-    public ZlPushCommResult<List<ThirdResult>> pushZl(ProductReport productReport) {
+    public ZlPushCommResult<List<PushResult>> pushZl(ProductReport productReport) {
         log.info("清结算开始推送，report:{}", JSONUtil.toJsonStr(productReport));
         Long reportId = productReport.getId();
         ZlPushCommResult result = ZlPushCommResult.fail();
-        List<ThirdResult> settleNotifies = new ArrayList<>();
-        List<ThirdResult> array = new ArrayList<>();
-        for (ThirdResult productSettleNotify : settleNotifies) {
-            ThirdResult thirdResult = null;
+        List<PushResult> settleNotifies = new ArrayList<>();
+        List<PushResult> array = new ArrayList<>();
+        for (PushResult productSettleNotify : settleNotifies) {
+            PushResult pushResult = null;
             // TODO 调用第三方接口
-            if(thirdResult.isSuccess()){
-                array.add(thirdResult);
+            if(pushResult.isSuccess()){
+                array.add(pushResult);
             }else{
                 result.setIsNeedSuccessCallBack(false);
             }
@@ -61,8 +60,8 @@ public class BPush extends AbsPush {
 
     @Override
     public void successCallBack(ZlPushCommResult result, ProductReport report) {
-        List<ThirdResult> dataArray = (List<ThirdResult>)result.getData();
-        for (ThirdResult o : dataArray) {
+        List<PushResult> dataArray = (List<PushResult>)result.getData();
+        for (PushResult o : dataArray) {
             log.info("回调：{}",JSONUtil.toJsonStr(o));
         }
     }
