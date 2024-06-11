@@ -1,7 +1,6 @@
 package com.example.demo.service.chain;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.example.demo.service.chain.commonresult.ZlCommonPayload;
 import lombok.Data;
 
 /**
@@ -11,7 +10,7 @@ import lombok.Data;
  * @Version 1.0
  */
 @Data
-public class SettleNotifyResult extends ZlCommonPayload {
+public class ThirdResult  {
 
     /**
      * 响应码 00：成功，其他：错误
@@ -41,8 +40,8 @@ public class SettleNotifyResult extends ZlCommonPayload {
     /**
      * 构建失败的返回信息
      */
-    public static SettleNotifyResult fail() {
-        SettleNotifyResult result = new SettleNotifyResult();
+    public static ThirdResult fail() {
+        ThirdResult result = new ThirdResult();
         result.setReturnCode("999");
         result.setReturnMsg("系统出现未知错误");
         return result;

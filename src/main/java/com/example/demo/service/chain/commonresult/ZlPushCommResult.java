@@ -1,4 +1,4 @@
-package com.example.demo.service.chain;
+package com.example.demo.service.chain.commonresult;
 
 import lombok.Data;
 

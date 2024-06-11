@@ -1,11 +1,11 @@
-package com.example.demo.service.chain.node;
+package com.example.demo.service.chain.push;
 
 import cn.hutool.json.JSONUtil;
 import com.example.demo.domain.ProductReport;
 import com.example.demo.enums.ZLSystemBizTypeEnum;
 import com.example.demo.service.chain.AbsPush;
-import com.example.demo.service.chain.SettleNotifyResult;
-import com.example.demo.service.chain.ZlPushCommResult;
+import com.example.demo.service.chain.ThirdResult;
+import com.example.demo.service.chain.commonresult.ZlPushCommResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -21,35 +21,35 @@ import java.util.List;
  */
 @Slf4j
 @Component
-public class CPushNode extends AbsPush {
+public class BPush extends AbsPush {
 
 
 
     @Override
     public String getZlBizName() {
-        return ZLSystemBizTypeEnum.YH_CASH_BACK_RULE.getDesc();
+        return ZLSystemBizTypeEnum.DNF_ACTIVITY.getDesc();
     }
 
     @Override
     public Integer getZlBizType() {
-        return ZLSystemBizTypeEnum.YH_CASH_BACK_RULE.getCode();
+        return ZLSystemBizTypeEnum.DNF_ACTIVITY.getCode();
 
     }
 
     @Override
-    public ZlPushCommResult<List<SettleNotifyResult>> pushZl(ProductReport productReport) {
+    public ZlPushCommResult<List<ThirdResult>> pushZl(ProductReport productReport) {
         log.info("清结算开始推送，report:{}", JSONUtil.toJsonStr(productReport));
         Long reportId = productReport.getId();
         ZlPushCommResult result = ZlPushCommResult.fail();
-        List<SettleNotifyResult> settleNotifies = new ArrayList<>();
-        List<SettleNotifyResult> array = new ArrayList<>();
-        for (SettleNotifyResult productSettleNotify : settleNotifies) {
-            SettleNotifyResult settleNotifyResult = null;
+        List<ThirdResult> settleNotifies = new ArrayList<>();
+        List<ThirdResult> array = new ArrayList<>();
+        for (ThirdResult productSettleNotify : settleNotifies) {
+            ThirdResult thirdResult = null;
             // TODO 调用第三方接口
-            if(settleNotifyResult.isSuccess()){
-                array.add(settleNotifyResult);
+            if(thirdResult.isSuccess()){
+                array.add(thirdResult);
             }else{
-                settleNotifyResult.setNeedSetCallBackId(false);
+                result.setIsNeedSuccessCallBack(false);
             }
         }
         Integer status = array.size() == settleNotifies.size()?0:1;
@@ -61,8 +61,8 @@ public class CPushNode extends AbsPush {
 
     @Override
     public void successCallBack(ZlPushCommResult result, ProductReport report) {
-        List<SettleNotifyResult> dataArray = (List<SettleNotifyResult>)result.getData();
-        for (SettleNotifyResult o : dataArray) {
+        List<ThirdResult> dataArray = (List<ThirdResult>)result.getData();
+        for (ThirdResult o : dataArray) {
             log.info("回调：{}",JSONUtil.toJsonStr(o));
         }
     }

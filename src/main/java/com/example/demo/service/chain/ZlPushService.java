@@ -1,18 +1,15 @@
 package com.example.demo.service.chain;
 
 import cn.hutool.json.JSONUtil;
-import com.example.demo.dao.ProductReportPushHistoryCrudService;
 import com.example.demo.domain.ProductReport;
 import com.example.demo.enums.ActivityPatternEnum;
 import com.example.demo.enums.ZLSystemBizTypeEnum;
-import com.example.demo.service.chain.node.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -26,34 +23,20 @@ import java.util.Map;
 @Slf4j
 public class ZlPushService {
 
-    @Autowired
-    APushNode zlQjsPushNode;
-
-    @Autowired
-    BPushNode yhUnionProductPushNode;
-
-    @Autowired
-    CPushNode yhCashBackRulePushNode;
-
-    @Autowired
-    DPushNode dnfActivityPushNode;
-
 
 
     @Autowired
-    ProductReportPushHistoryCrudService historyCrudService;
+    ChainBuild chainBuild;
+
+
+
+
 
     /**
      * 活动模式和推送链的关系
      */
-    Map<Integer, PushZLChain> activityPattenPushChainRule;
+    Map<Integer, PushZLChainExecute> activityPattenPushChainRule;
 
-    Map<Integer,PushZLChain> pushZLChainMap = new HashMap<>() ;
-
-    /**
-     * 构建子业务类型和推送chain关系
-     * @return
-     */
     @PostConstruct
     public void init(){
         this.buildActivityPattenPushChainRuleRelation();
@@ -65,44 +48,19 @@ public class ZlPushService {
     public void buildActivityPattenPushChainRuleRelation(){
 
         this.activityPattenPushChainRule = new HashMap<>();
-        PushZLChain pushZLChain9 = this.buildPushChain9();
-
-
-
+        PushZLChainExecute pushZLChainExecute9 = this.chainBuild.buildPushChain9();
 
         // 权益券-数币红包活动
-        this.activityPattenPushChainRule.put(ActivityPatternEnum.UNION_PRODUCT_DCEP_RED_PACKAGE.getCode(), pushZLChain9);
+        this.activityPattenPushChainRule.put(ActivityPatternEnum.UNION_PRODUCT_DCEP_RED_PACKAGE.getCode(), pushZLChainExecute9);
 
     }
 
 
 
-
-
-    private PushZLChain buildPushChain9() {
-        PushZLChain pushChain = new PushZLChain(9, this.historyCrudService);
-        pushChain.addLast(new DefaultPushNode(this.dnfActivityPushNode));
-        pushChain.addLast(new DefaultPushNode(this.yhCashBackRulePushNode));
-        pushChain.addLast(new DefaultPushNode(this.yhUnionProductPushNode));
-        pushChain.addLast(new DefaultPushNode(this.zlQjsPushNode));
-        pushChain.setChainName("FULL");
-        this.pushZLChainMap.put(pushChain.getId(),pushChain);
-        return pushChain;
+    public Map<Integer, PushZLChainExecute> activityPattenPushRuleRelation(){
+        return this.activityPattenPushChainRule;
     }
 
-    /**
-     *
-     * 根据活动模式获取执行链的id,存入productReport表的reportType
-     * @param activityPattern
-     * @return
-     */
-    public Integer getReportTypeByPatternPackage(Integer activityPattern) {
-        PushZLChain pushZLChain = this.activityPattenPushChainRule.get(activityPattern);
-        if(pushZLChain!= null){
-            return pushZLChain.getId();
-        }
-        return null;
-    }
 
     /**
      * 开始推送给众联相关业务方
@@ -110,9 +68,9 @@ public class ZlPushService {
      */
     public Boolean startPush(ProductReport report) {
         Integer reportType = report.getReportType();
-        PushZLChain pushZLChain = this.pushZLChainMap.get(reportType);
-        log.info("============开始向众联推送业务信息,chainId:{},reportId:{}=========================",pushZLChain.show(), JSONUtil.toJsonStr(report));
-        return pushZLChain.start(report);
+        PushZLChainExecute pushZLChainExecute = this.chainBuild.getPushZLChainMap().get(reportType);
+        log.info("============开始向众联推送业务信息,chainId:{},reportId:{}=========================", pushZLChainExecute.show(), JSONUtil.toJsonStr(report));
+        return pushZLChainExecute.start(report);
     }
 
     /**
@@ -120,41 +78,33 @@ public class ZlPushService {
      */
     public Boolean startPushFromZlBizType(ProductReport report, Integer zlBizType){
         Integer reportType = report.getReportType();
-        PushZLChain pushZLChain = this.pushZLChainMap.get(reportType);
-        log.info("============开始从【{}】向众联推送业务信息，chainId:{},reportId:{}=========================", ZLSystemBizTypeEnum.getByCode(zlBizType).getDesc(),pushZLChain.show(),report);
-        return pushZLChain.startByBizType(report,zlBizType);
+        PushZLChainExecute pushZLChainExecute = this.chainBuild.getPushZLChainMap().get(reportType);
+        log.info("============开始从【{}】向众联推送业务信息，chainId:{},reportId:{}=========================", ZLSystemBizTypeEnum.getByCode(zlBizType).getDesc(), pushZLChainExecute.show(),report);
+        return pushZLChainExecute.startByBizType(report,zlBizType);
     }
 
     /**
      * 单个推送某个业务类型
      */
     public Boolean singleBizPush(ProductReport report,Integer zlBizType){
-        PushZLChain pushZLChain = this.pushZLChainMap.get(9);
+        PushZLChainExecute pushZLChainExecute = this.chainBuild.getPushZLChainMap().get(9);
         log.info("============开始向众联推送单个业务信息，zlBizType:{},reportId:{}=========================", ZLSystemBizTypeEnum.getByCode(zlBizType).getDesc(),report);
-        return pushZLChain.singleBizPush(report,zlBizType);
+        return pushZLChainExecute.singleBizPush(report,zlBizType);
     }
-
     /**
-     * 根据推送链类型，获取业务类型集合
-     * @param reportType
+     *
+     * 根据活动模式获取执行链的id,存入productReport表的reportType
+     * @param activityPattern
      * @return
      */
-    public List<Integer> getPushBizTypeList(Integer reportType){
-        PushZLChain pushZLChain = this.getPushChainByReportType(reportType);
-        return pushZLChain.getBizTypeList();
+    public Integer getReportTypeByPatternPackage(Integer activityPattern) {
+        PushZLChainExecute pushZLChainExecute = this.activityPattenPushChainRule.get(activityPattern);
+        if(pushZLChainExecute!= null){
+            return pushZLChainExecute.getId();
+        }
+        return null;
     }
 
-    public PushZLChain getPushChainByReportType(Integer reportType){
-        return this.pushZLChainMap.get(reportType);
-    }
-
-    public Map<Integer,PushZLChain> allPushChain(){
-        return this.pushZLChainMap;
-    }
-
-    public Map<Integer,PushZLChain> activityPattenPushRuleRelation(){
-        return this.activityPattenPushChainRule;
-    }
 
 
 

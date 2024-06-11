@@ -1,7 +1,7 @@
 package com.example.demo.service.chain.callback;
 
 import com.example.demo.domain.ProductReport;
-import com.example.demo.service.chain.ZlPushCommResult;
+import com.example.demo.service.chain.commonresult.ZlPushCommResult;
 
 /**
  * (一句话描述该类的功能)

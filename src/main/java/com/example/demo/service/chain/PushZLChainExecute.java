@@ -6,7 +6,8 @@ import com.example.demo.dao.ProductReportPushHistoryCrudService;
 import com.example.demo.domain.ProductRecordPushHistory;
 import com.example.demo.domain.ProductReport;
 import com.example.demo.enums.ZLSystemBizTypeEnum;
-import com.example.demo.service.chain.node.DefaultPushNode;
+import com.example.demo.service.chain.commonresult.ZlPushCommResult;
+import com.example.demo.service.chain.node.PushNode;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -25,7 +26,7 @@ import java.util.stream.Collectors;
  */
 @Data
 @Slf4j
-public class PushZLChain {
+public class PushZLChainExecute {
     /**
      * 执行链名称
      */
@@ -44,7 +45,7 @@ public class PushZLChain {
 
     ProductReportPushHistoryCrudService historyCrudService;
 
-    public PushZLChain(Integer id,ProductReportPushHistoryCrudService historyCrudService) {
+    public PushZLChainExecute(Integer id, ProductReportPushHistoryCrudService historyCrudService) {
         this.id = id;
         this.historyCrudService = historyCrudService;
     }
@@ -54,12 +55,12 @@ public class PushZLChain {
      */
     List<ZLSystemBizTypeEnum> bizEnumTypeList = new ArrayList<>();
 
-    DefaultPushNode head = null;
+    PushNode head = null;
 
-    DefaultPushNode tail = null;
+    PushNode tail = null;
 
-    public void addLast(DefaultPushNode... nodes) {
-        for (DefaultPushNode node : nodes) {
+    public void addLast(PushNode... nodes) {
+        for (PushNode node : nodes) {
             this.bizTypeList.add(node.getValue().getZlBizType());
             this.bizEnumTypeList.add(ZLSystemBizTypeEnum.getByCode(node.getValue().getZlBizType()));
             if(this.head == null){
@@ -106,7 +107,7 @@ public class PushZLChain {
      */
     public Boolean execSinglePush(ProductReport report, Integer zlBizType){
         Boolean pushResult = false;
-        DefaultPushNode node = this.head;
+        PushNode node = this.head;
         while (node != null){
             if(zlBizType != null && zlBizType.equals(node.getValue().getZlBizType())){
                 ZlPushCommResult zlPushCommResult = node.getValue().pushZl(report);
@@ -130,7 +131,7 @@ public class PushZLChain {
 
     public Boolean execChain(ProductReport report, Integer zlBizType){
         Integer index = getIndexByOfPushChainBizType(zlBizType);
-        DefaultPushNode node = this.head;
+        PushNode node = this.head;
         int count = 0;
         int continueCount = 0;
         while (node != null){
@@ -212,7 +213,7 @@ public class PushZLChain {
 
     public String show(){
         StringBuilder sb =new StringBuilder("PushZLChain:id="+ this.getId()+"包含");
-        DefaultPushNode node = this.head;
+        PushNode node = this.head;
         while (node != null){
             sb.append(node.getValue().getZlBizName()+"->");
             node = node.getNext();
