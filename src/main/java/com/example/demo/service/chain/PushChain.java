@@ -6,8 +6,8 @@ import com.example.demo.dao.ProductReportPushHistoryCrudService;
 import com.example.demo.domain.ProductRecordPushHistory;
 import com.example.demo.domain.ProductReport;
 import com.example.demo.enums.ZLSystemBizTypeEnum;
-import com.example.demo.service.chain.commonresult.ZlPushCommResult;
-import com.example.demo.service.chain.node.PushNode;
+import com.example.demo.service.chain.result.NodeResult;
+import com.example.demo.service.chain.node.ListNode;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
@@ -55,12 +55,12 @@ public class PushChain {
      */
     List<ZLSystemBizTypeEnum> bizEnumTypeList = new ArrayList<>();
 
-    PushNode head = null;
+    ListNode head = null;
 
-    PushNode tail = null;
+    ListNode tail = null;
 
-    public void addLast(PushNode... nodes) {
-        for (PushNode node : nodes) {
+    public void addLast(ListNode... nodes) {
+        for (ListNode node : nodes) {
             this.bizTypeList.add(node.getValue().getZlBizType());
             this.bizEnumTypeList.add(ZLSystemBizTypeEnum.getByCode(node.getValue().getZlBizType()));
             if(this.head == null){
@@ -107,17 +107,17 @@ public class PushChain {
      */
     public Boolean execSinglePush(ProductReport report, Integer zlBizType){
         Boolean pushResult = false;
-        PushNode node = this.head;
+        ListNode node = this.head;
         while (node != null){
             if(zlBizType != null && zlBizType.equals(node.getValue().getZlBizType())){
-                ZlPushCommResult zlPushCommResult = node.getValue().pushZl(report);
+                NodeResult nodeResult = node.getValue().pushZl(report);
                 ProductRecordPushHistory productRecordPushHistory =ProductRecordPushHistory.builder().chainId(this.id).reportId(report.getId())
                         .bizTypes(StringUtils.join(this.bizTypeList,",")).bizTypeNames(StringUtils.join(this.bizEnumTypeList,","))
                         .currentType(node.getValue().getZlBizType()).currentTypeName(node.getValue().getZlBizName()).traceId(MDC.get("traceId")).build();
-                if(ObjectUtils.isNotEmpty(zlPushCommResult)){
-                    pushResult = node.getValue().checkSuccess(zlPushCommResult);
-                    if(node.getValue().isNeedSuccessCallBack(zlPushCommResult)){
-                        node.getValue().successCallBack(zlPushCommResult,report);
+                if(ObjectUtils.isNotEmpty(nodeResult)){
+                    pushResult = node.getValue().checkSuccess(nodeResult);
+                    if(node.getValue().isNeedSuccessCallBack(nodeResult)){
+                        node.getValue().successCallBack(nodeResult,report);
                     }
                 }
                 productRecordPushHistory.setCurrentPushResult(pushResult?0:1);
@@ -131,7 +131,7 @@ public class PushChain {
 
     public Boolean execChain(ProductReport report, Integer zlBizType){
         Integer index = getIndexByOfPushChainBizType(zlBizType);
-        PushNode node = this.head;
+        ListNode node = this.head;
         int count = 0;
         int continueCount = 0;
         while (node != null){
@@ -145,20 +145,20 @@ public class PushChain {
             }
             Boolean pushResult = false;
             log.info("reportId:{},chainId:{},开始推送:{}节点",report.getId(),this.id,node.getValue().getZlBizName());
-            ZlPushCommResult zlPushCommResult = node.getValue().pushZl(report);
+            NodeResult nodeResult = node.getValue().pushZl(report);
             ProductRecordPushHistory productRecordPushHistory =ProductRecordPushHistory.builder().chainId(this.id).reportId(report.getId())
                     .bizTypes(StringUtils.join(this.bizTypeList,",")).bizTypeNames(StringUtils.join(this.bizEnumTypeList,","))
                     .currentType(node.getValue().getZlBizType()).currentTypeName(node.getValue().getZlBizName()).traceId(MDC.get("traceId")).build();
-            if(ObjectUtils.isNotEmpty(zlPushCommResult)){
-                pushResult = node.getValue().checkSuccess(zlPushCommResult);
+            if(ObjectUtils.isNotEmpty(nodeResult)){
+                pushResult = node.getValue().checkSuccess(nodeResult);
                 if(pushResult){
                     // 如果当前节点需要执行回调，则直接回调
-                    if(node.getValue().isNeedSuccessCallBack(zlPushCommResult)){
-                        node.getValue().successCallBack(zlPushCommResult,report);
+                    if(node.getValue().isNeedSuccessCallBack(nodeResult)){
+                        node.getValue().successCallBack(nodeResult,report);
                         log.info("reportId:{},chainId:{},恭喜推送:{}节点成功",report.getId(),this.id,node.getValue().getZlBizName());
                     }
                 }else{
-                    log.warn("【{}】推送失败，响应：{}",node.getValue().getZlBizName()+"---", JSONUtil.toJsonStr(zlPushCommResult));
+                    log.warn("【{}】推送失败，响应：{}",node.getValue().getZlBizName()+"---", JSONUtil.toJsonStr(nodeResult));
                     pushResult = node.getValue().failCallBack(report);
                     // 如果推送还是失败则不在继续往下执行推送链
                     if(!pushResult){
@@ -213,7 +213,7 @@ public class PushChain {
 
     public String show(){
         StringBuilder sb =new StringBuilder("PushZLChain:id="+ this.getId()+"包含");
-        PushNode node = this.head;
+        ListNode node = this.head;
         while (node != null){
             sb.append(node.getValue().getZlBizName()+"->");
             node = node.getNext();

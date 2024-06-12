@@ -1,7 +1,7 @@
 package com.example.demo.service.chain.callback;
 
 import com.example.demo.domain.ProductReport;
-import com.example.demo.service.chain.commonresult.ZlPushCommResult;
+import com.example.demo.service.chain.result.NodeResult;
 
 /**
  * (一句话描述该类的功能)
@@ -17,7 +17,7 @@ public interface IPushCallBack {
       * 需要各个推送业务方具体实现
       * @param result
       */
-     void successCallBack(ZlPushCommResult result, ProductReport report);
+     void successCallBack(NodeResult result, ProductReport report);
 
      /**
       * 推送失败的回调，absPush的默认处理测试重试2次，各个业务方也可以自定义自己的推送失败处理策略

@@ -2,7 +2,7 @@ package com.example.demo.service.chain.push;
 
 import com.example.demo.domain.ProductReport;
 import com.example.demo.service.chain.callback.IPushCallBack;
-import com.example.demo.service.chain.commonresult.ZlPushCommResult;
+import com.example.demo.service.chain.result.NodeResult;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
@@ -33,24 +33,24 @@ public abstract class AbsPush implements IPushCallBack {
      * @param report
      * @return
      */
-    public abstract ZlPushCommResult pushZl(ProductReport report);
+    public abstract NodeResult pushZl(ProductReport report);
 
     /**
      * 检查众联推送结果是否成功
      * @param result
      * @return
      */
-    public boolean checkSuccess(ZlPushCommResult result) {
+    public boolean checkSuccess(NodeResult result) {
         return result.isSuccess();
     }
 
-    public  Boolean isNeedSuccessCallBack(ZlPushCommResult result){
+    public  Boolean isNeedSuccessCallBack(NodeResult result){
         return result != null && result.isSuccess() && result.getIsNeedSuccessCallBack();
     }
 
 
     @Override
-    public abstract void successCallBack(ZlPushCommResult result,ProductReport report);
+    public abstract void successCallBack(NodeResult result, ProductReport report);
 
     @Override
     public Boolean failCallBack(ProductReport report){
@@ -67,7 +67,7 @@ public abstract class AbsPush implements IPushCallBack {
         return false;
     }
 
-    private ZlPushCommResult rePush(ProductReport report, Integer count)  {
+    private NodeResult rePush(ProductReport report, Integer count)  {
         log.warn("开始第{}次重试推送",(2-count+1));
         return this.pushZl(report);
     }

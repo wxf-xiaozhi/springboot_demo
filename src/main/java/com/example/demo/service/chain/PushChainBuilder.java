@@ -1,7 +1,7 @@
 package com.example.demo.service.chain;
 
 import com.example.demo.dao.ProductReportPushHistoryCrudService;
-import com.example.demo.service.chain.node.PushNode;
+import com.example.demo.service.chain.node.ListNode;
 import com.example.demo.service.chain.push.APush;
 import com.example.demo.service.chain.push.BPush;
 import com.example.demo.service.chain.push.CPush;
@@ -50,10 +50,10 @@ public class PushChainBuilder {
 
     PushChain buildPushChain9() {
         PushChain pushChain = new PushChain(9, this.historyCrudService);
-        pushChain.addLast(new PushNode(this.dnfActivityPushNode));
-        pushChain.addLast(new PushNode(this.yhCashBackRulePushNode));
-        pushChain.addLast(new PushNode(this.yhUnionProductPushNode));
-        pushChain.addLast(new PushNode(this.zlQjsPushNode));
+        pushChain.addLast(new ListNode(this.dnfActivityPushNode));
+        pushChain.addLast(new ListNode(this.yhCashBackRulePushNode));
+        pushChain.addLast(new ListNode(this.yhUnionProductPushNode));
+        pushChain.addLast(new ListNode(this.zlQjsPushNode));
         pushChain.setChainName("FULL");
         this.pushZLChainMap.put(pushChain.getId(),pushChain);
         return pushChain;

@@ -4,7 +4,7 @@ import cn.hutool.json.JSONUtil;
 import com.example.demo.domain.ProductReport;
 import com.example.demo.enums.ZLSystemBizTypeEnum;
 import com.example.demo.service.chain.push.result.PushResult;
-import com.example.demo.service.chain.commonresult.ZlPushCommResult;
+import com.example.demo.service.chain.result.NodeResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -36,10 +36,10 @@ public class DPush extends AbsPush {
     }
 
     @Override
-    public ZlPushCommResult<List<PushResult>> pushZl(ProductReport productReport) {
+    public NodeResult<List<PushResult>> pushZl(ProductReport productReport) {
         log.info("清结算开始推送，report:{}", JSONUtil.toJsonStr(productReport));
         Long reportId = productReport.getId();
-        ZlPushCommResult result = ZlPushCommResult.fail();
+        NodeResult result = NodeResult.fail();
         List<PushResult> settleNotifies = new ArrayList<>();
         List<PushResult> array = new ArrayList<>();
         for (PushResult productSettleNotify : settleNotifies) {
@@ -59,7 +59,7 @@ public class DPush extends AbsPush {
 
 
     @Override
-    public void successCallBack(ZlPushCommResult result, ProductReport report) {
+    public void successCallBack(NodeResult result, ProductReport report) {
         List<PushResult> dataArray = (List<PushResult>)result.getData();
         for (PushResult o : dataArray) {
             log.info("回调：{}",JSONUtil.toJsonStr(o));

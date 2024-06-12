@@ -1,4 +1,4 @@
-package com.example.demo.service.chain.commonresult;
+package com.example.demo.service.chain.result;
 
 import lombok.Data;
 
@@ -12,7 +12,7 @@ import java.util.Objects;
  * @Date: 2024/4/15 11:44
  */
 @Data
-public class ZlPushCommResult<T>{
+public class NodeResult<T>{
 
     private Integer status = 1;
 
@@ -36,16 +36,16 @@ public class ZlPushCommResult<T>{
 
     private T data;
 
-    public static <T> ZlPushCommResult success(T data) {
-        ZlPushCommResult result = new ZlPushCommResult<T>();
+    public static <T> NodeResult success(T data) {
+        NodeResult result = new NodeResult<T>();
         result.setData(data);
         result.setStatus(0);
         result.setErrMsg("");
         return result;
     }
 
-    public static <T> ZlPushCommResult build(Integer status,T data) {
-        ZlPushCommResult result = new ZlPushCommResult<T>();
+    public static <T> NodeResult build(Integer status, T data) {
+        NodeResult result = new NodeResult<T>();
         result.setData(data);
         result.setStatus(status);
         result.setErrMsg("");
@@ -54,8 +54,8 @@ public class ZlPushCommResult<T>{
 
 
 
-    public static ZlPushCommResult fail() {
-        ZlPushCommResult result = new ZlPushCommResult<>();
+    public static NodeResult fail() {
+        NodeResult result = new NodeResult<>();
         result.setStatus(1);
         result.setErrMsg("系统出现未知错误");
         return result;

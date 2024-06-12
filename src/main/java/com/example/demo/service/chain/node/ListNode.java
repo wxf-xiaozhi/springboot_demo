@@ -11,13 +11,13 @@ import lombok.Data;
  * @Date: 2024/4/11 11:30
  */
 @Data
-public class PushNode {
+public class ListNode {
 
     AbsPush value;
 
-    PushNode next;
+    ListNode next;
 
-    public PushNode(AbsPush value) {
+    public ListNode(AbsPush value) {
         this.value = value;
     }
 }
