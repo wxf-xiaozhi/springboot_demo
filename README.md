@@ -33,7 +33,19 @@ com/example/demo/StopWatchTest.java
 ```
 
 ## 基于角色的数据列级别的控制（列级别控制）
+### sql列级别过滤
+### 序列化级别基于字段的过滤
 ```agsl
 com.example.demo.aspect.DataFilterAspect.dataFilter
+```
+
+## 多态下this测试,简单链式调用实现
+```agsl
+com.example.demo.AbsParentProcessTest
+```
+
+## 链式调用实现
+```
+com.example.demo.service.chain.ZlPushService
 ```
 
