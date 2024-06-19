@@ -19,6 +19,7 @@
         <mysql.connect.java>8.0.27</mysql.connect.java>
         <mysql-connector-j>8.0.33</mysql-connector-j>
         <shiro.version>1.12.0</shiro.version>
+        <dynamictp.version>1.1.7</dynamictp.version>
     </properties>
     <dependencies>
         <dependency>
@@ -106,13 +107,47 @@
             <artifactId>aspectjweaver</artifactId>
         </dependency>
 
-
+        <!--rabbitMq-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-amqp</artifactId>
         </dependency>
 
+        <!--动态线程池监控-->
+        <dependency>
+            <groupId>org.dromara.dynamictp</groupId>
+            <artifactId>dynamic-tp-spring-boot-starter-nacos</artifactId>
+            <version>${dynamictp.version}</version>
+        </dependency>
+
+        <!--日志trace百融自研-->
+        <dependency>
+            <groupId>com.br</groupId>
+            <artifactId>logtrace-spring-boot-starter</artifactId>
+            <version>2.0.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+
+
+
     </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>2021.0.8</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+
+    </dependencyManagement>
 
     <build>
         <plugins>
