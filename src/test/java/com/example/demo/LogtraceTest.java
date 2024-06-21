@@ -21,7 +21,7 @@ import java.util.concurrent.CompletableFuture;
  */
 @SpringBootTest
 @Slf4j
-public class TestLogtrace {
+public class LogtraceTest {
 
     @Autowired
     SampleFeignClient sampleFeignClient;
