@@ -16,7 +16,6 @@
 package com.example.demo.rabbit;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
@@ -31,9 +30,11 @@ import org.springframework.util.StopWatch;
 //@Order
 //@Priority()
 //@RabbitListener(queues = "tut.hello",priority = "10")
-@RabbitListener(queues = "tut.hello",priority = "${server.port}" )
+
 //@DependsOn("tut2Receiver")
 public class Tut1Receiver {
+
+
 
 	private  int instance =1;
 
@@ -45,7 +46,7 @@ public class Tut1Receiver {
 		log.info("Tut1Receiver创建了");
 	}
 
-	@RabbitHandler
+	@RabbitListener(priority = "${queue.priority:10}",queues = "tut.hello" )
 	public void receive(String in) throws InterruptedException {
 		StopWatch watch = new StopWatch();
 		watch.start();

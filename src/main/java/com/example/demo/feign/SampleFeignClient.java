@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @version 1.0
  * @date 2022-07-21
  */
-@FeignClient(name = "activity-service", url = "localhost:9302",configuration =  {DefaultLogTraceRequestInterceptor.class})
+@FeignClient(name = "activity-service", url = "localhost:9302",configuration =  {DefaultLogTraceRequestInterceptor.class,CustomFeignLogger.class})
 public interface SampleFeignClient {
 
 
