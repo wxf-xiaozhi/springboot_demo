@@ -139,6 +139,27 @@
             <version>4.9.6</version>
         </dependency>
 
+<!--        &lt;!&ndash;动态debug日志 https://c.100credit.cn/pages/viewpage.action?pageId=57395310&ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>com.br.transfer</groupId>-->
+<!--            <artifactId>header-transfer-spring-boot-starter</artifactId>-->
+<!--            <version>1.0.5</version>-->
+<!--        </dependency>-->
+
+<!--        &lt;!&ndash;百融脱敏验证类 https://c.100credit.cn/pages/viewpage.action?pageId=38206583&ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>com.br</groupId>-->
+<!--            <artifactId>commons-validator</artifactId>-->
+<!--            <version>1.4.0</version>-->
+<!--        </dependency>-->
+
+<!--        &lt;!&ndash;rocketMq https://github.com/apache/rocketmq-spring/wiki/%E7%94%A8%E6%88%B7%E6%89%8B%E5%86%8C&ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>org.apache.rocketmq</groupId>-->
+<!--            <artifactId>rocketmq-spring-boot-starter</artifactId>-->
+<!--            <version>2.3.0</version>-->
+<!--        </dependency>-->
+
 
 
     </dependencies>

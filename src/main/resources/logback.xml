@@ -43,6 +43,9 @@
     </appender>
 
     <logger name="com.example.demo" level="debug" />
+        <!--事务日志打印-->
+    <logger name="org.springframework.transaction.interceptor" level="trace" />
+
 
 <!--    <logger name="com.sxnd.develop" level="debug" />-->
 

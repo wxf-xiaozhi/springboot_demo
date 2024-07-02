@@ -1,11 +1,13 @@
 package com.example.demo.service;
 
+import com.example.demo.dao.UserCrudServiceImpl;
 import com.example.demo.domain.CasUser;
+import com.example.demo.domain.User;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -19,6 +21,9 @@ public class CasUserService {
 
     CasUser[] users = new CasUser[10];
     List<CasUser> list = new ArrayList<>();
+
+    @Resource
+    private UserCrudServiceImpl userCrudService;
 
     @PostConstruct
     public void init(){
@@ -35,6 +40,9 @@ public class CasUserService {
     public  List<CasUser> getUserList(){
         return list;
     }
-
+    private void saveMyUser(String userName){
+        User build = User.builder().name(userName+".bak").age(10).build();
+        userCrudService.save(build);
+    }
 
 }

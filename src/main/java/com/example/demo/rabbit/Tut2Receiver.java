@@ -18,7 +18,6 @@ package com.example.demo.rabbit;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
 
 /**
@@ -26,7 +25,7 @@ import org.springframework.util.StopWatch;
  * @author Scott Deeg
  */
 //@Order(2)
-@Component
+//@Component
 @Slf4j
 //@RabbitListener(queues = "tut.hello",exclusive = true)
 @RabbitListener(priority = "${queue.priority:10}",queues = "tut.hello")

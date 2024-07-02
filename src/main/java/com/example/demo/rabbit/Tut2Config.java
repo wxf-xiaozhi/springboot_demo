@@ -51,7 +51,7 @@ public class Tut2Config {
 //	}
 
 //	@Profile("sender")
-	@Bean
+//	@Bean
 	public Tut2Sender sender() {
 		return new Tut2Sender();
 	}
