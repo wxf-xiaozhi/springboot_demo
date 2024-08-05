@@ -34,7 +34,7 @@ public class UserService {
         return "成功";
     }
 
-    private void saveMyUser(String userName){
+    public void saveMyUser(String userName){
         User build = User.builder().name(userName+".bak").age(10).build();
         userCrudService.save(build);
     }
