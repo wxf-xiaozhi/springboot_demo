@@ -139,6 +139,17 @@
             <version>4.9.6</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-redis</artifactId>
+<!--            <version>2.7.0</version>-->
+        </dependency>
+            <dependency>
+                <groupId>io.lettuce</groupId>
+                <artifactId>lettuce-core</artifactId>
+                <version>6.1.10.RELEASE</version>
+            </dependency>
+
 <!--        &lt;!&ndash;动态debug日志 https://c.100credit.cn/pages/viewpage.action?pageId=57395310&ndash;&gt;-->
 <!--        <dependency>-->
 <!--            <groupId>com.br.transfer</groupId>-->

@@ -6,9 +6,9 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.google.common.collect.Lists;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -46,7 +46,7 @@ public class MpServiceImpl<M extends BaseMapper<T>, T> extends ServiceImpl<M, T>
 
     public List<T> listByIdList(Collection<? extends Serializable> idList) {
         if (CollectionUtil.isEmpty(idList)) {
-            return Lists.newArrayList();
+            return new ArrayList();
         } else {
             List<T> modelList = super.listByIds(new HashSet<>(idList));
             return modelList;

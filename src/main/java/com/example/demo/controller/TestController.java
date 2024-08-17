@@ -1,17 +1,21 @@
 package com.example.demo.controller;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.example.demo.dao.UserCrudServiceImpl;
 import com.example.demo.domain.User;
 import com.example.demo.enums.ActivityPatternEnum;
 import com.example.demo.service.UserService;
 import com.example.demo.vo.UserVO;
-import com.google.common.collect.Lists;
 import com.yomahub.liteflow.core.FlowExecutor;
 import com.yomahub.liteflow.flow.LiteflowResponse;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,6 +26,10 @@ import java.util.List;
  */
 @RestController
 public class TestController {
+
+
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
 
     @Resource
     private FlowExecutor flowExecutor;
@@ -41,7 +49,7 @@ public class TestController {
     @GetMapping("/userlist")
     public List<UserVO> getUser(){
         List<User> list = userCrudService.list();
-        List<UserVO> lists = Lists.newArrayList();
+        List<UserVO> lists = new ArrayList();
         for (int i = 0; i < list.size(); i++) {
             UserVO userVO = new UserVO();
             BeanUtils.copyProperties(list.get(i),userVO);
@@ -68,5 +76,21 @@ public class TestController {
     public String saveUser(@RequestBody User user){
        String a =  userService.saveUser(user);
        return a;
+    }
+
+    @PostMapping("/testMulget")
+    public List<String> materialUpload(@RequestBody JSONObject param) throws Exception {
+        JSONArray list = param.getJSONArray("list");
+        List<String> a= new ArrayList<>();
+        for (Object o : list) {
+            a.add(o.toString());
+        }
+
+        return multiGet(a);
+    }
+
+
+    public List<String> multiGet(List<String> keys) {
+        return this.stringRedisTemplate.opsForValue().multiGet(keys);
     }
 }
